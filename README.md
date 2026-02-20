@@ -4,14 +4,15 @@
 
 Downloads a Canva presentation as a video in a format suitable for displaying on unattended digital signage.
 
-The `canva_export.py` script is expected to be run as an unattended cronjob on the kiosk machine, for example
-a Raspberry Pi. It will export and download the presentation as a `.mp4` video file using Canva REST APIs.
+The application is expected to be run as a cronjob on the kiosk machine, for example
+a Raspberry Pi. It will convert and download the presentation as a `.mp4` video file using Canva REST APIs.
 
-The export and download will only be performed if the Canva presentation has been modified since the video was
-last downloaded.
+For efficiency the export and download will only be performed if the Canva presentation has been modified since the video was
+last downloaded. It should be safe to run the script frequently, every few minutes, to poll for changes.
 
-If network connectivity becomes unavailable the download will fail, but the kiosk will continue to display the
-previously downloaded version of the video.
+If network connectivity becomes unavailable the download will fail but the kiosk will continue to display the
+previously downloaded version of the video. On operating systems that support it the previous version of the
+video file will be replaced atomically.
 
 ## Usage
 
@@ -36,7 +37,7 @@ you run this application or if those cached credentials expire.
 The cached credentials will be refreshed every time you run the application, and as long as you run the application
 regularly, for example once a week, they should not expire.
 
-### Command-line usage
+### Command-line options
 
 #### Show usage instructions
 ```shell
