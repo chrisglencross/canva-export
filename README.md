@@ -22,7 +22,7 @@ The application uses OAuth credentials to authenticate to the Canva API. You wil
 following the [instructions from Canva](https://www.canva.dev/docs/connect/creating-integrations/).
 
 * When you are given a `Client ID` and `Client secret` value, put these in a `.env` file. See `dot.env.template` as
-and example. Alternatively, just copy the example `.env` file displayed on the Canva web page.
+an example. Alternatively, just copy the example `.env` file displayed on the Canva web page.
 * When setting scopes, integration requires *Read* `design:content` and `design:meta` access only.
 * When setting the `Authorized redirects` use `http://127.0.0.1:3001/redirect` as the only redirect.
 * There is no need to enable `Return navigation`
