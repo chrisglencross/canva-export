@@ -2,6 +2,7 @@ import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Optional
 
+import os
 import pkce
 import requests
 import yaml
@@ -75,17 +76,19 @@ def refresh_session(client_id, client_secret, session: Session):
     write_cached_session(session)
     return True
 
+def session_file() -> str:
+    return f"{os.environ["HOME"]}/data/.session.yaml"
 
 def read_cached_session() -> Optional[Session]:
     try:
-        with open('.session.yaml', 'r') as session_file:
-            previous_session = yaml.safe_load(session_file)
+        with open(session_file(), 'r') as f:
+            previous_session = yaml.safe_load(f)
             return Session(access_token=previous_session['access_token'], refresh_token=previous_session['refresh_token'])
     except OSError:
         return None
 
 def write_cached_session(session: Session):
-    with open('.session.yaml', 'w') as f:
+    with open(session_file(), 'w') as f:
         yaml.dump( {
             'access_token': session.access_token,
             'refresh_token': session.refresh_token
