@@ -31,7 +31,7 @@ def start_export_job(session: auth.Session, design_id: str):
                                  "design_id": design_id,
                                  "format": {
                                      "type": "mp4",
-                                     "quality": "horizontal_1080p", # or horizontal_4k
+                                     "quality": "horizontal_4k", # or horizontal_1080p
                                  }
                              })
     response.raise_for_status()
