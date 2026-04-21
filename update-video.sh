@@ -4,8 +4,7 @@ cd $(dirname $0)
 source ./venv/bin/activate
 
 python -m captive_portal
-
-python -m canva_export -d DAHB9p6lzXA
+python -m canva_export
 status=$?
 
 # Try to copy to persistent cache directory so we can display after a reboot

@@ -1,16 +1,13 @@
 import logging
-import os
-import tempfile
 import time
 from datetime import datetime, timezone
-from os.path import dirname
 
 import requests
-from canva_export import auth
+from canva_to_wordpress import canva_auth
 
 logger = logging.getLogger('canva_api')
 
-def get_updated_at(session: auth.Session, design_id: str) -> str:
+def get_updated_at(session: canva_auth.Session, design_id: str) -> str:
     response = requests.get(f"https://api.canva.com/rest/v1/designs/{design_id}",
                             headers={
                                 "Authorization": f"Bearer {session.access_token}"
@@ -20,7 +17,7 @@ def get_updated_at(session: auth.Session, design_id: str) -> str:
     epoch = data["design"]["updated_at"]
     return datetime.fromtimestamp(epoch, timezone.utc).isoformat()
 
-def start_export_job(session: auth.Session, design_id: str):
+def start_export_job(session: canva_auth.Session, design_id: str):
     logger.info(f"Exporting design {design_id}...")
     response = requests.post("https://api.canva.com/rest/v1/exports",
                              headers={
@@ -32,12 +29,13 @@ def start_export_job(session: auth.Session, design_id: str):
                                  "format": {
                                      "type": "mp4",
                                      "quality": "horizontal_4k", # or horizontal_1080p
+                                     "export_quality": "pro",
                                  }
                              })
     response.raise_for_status()
     return response.json()["job"]
 
-def poll_export_job(session: auth.Session, job_id: str):
+def poll_export_job(session: canva_auth.Session, job_id: str):
     response = requests.get(f"https://api.canva.com/rest/v1/exports/{job_id}",
                             headers={
                                 "Authorization": f"Bearer {session.access_token}"
@@ -45,24 +43,21 @@ def poll_export_job(session: auth.Session, job_id: str):
     response.raise_for_status()
     return response.json()["job"]
 
-def download_file(url, target_file):
-    logger.info(f"Downloading to {target_file}...")
+def download_file(url, fp):
+    logger.info(f"Downloading to {fp.name}...")
     with requests.get(url, stream=True) as response:
         response.raise_for_status()
-        with tempfile.NamedTemporaryFile(mode='wb', dir=dirname(target_file), delete=True, delete_on_close=False) as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
-            f.close()
-            os.rename(f.name, target_file)
+        for chunk in response.iter_content(chunk_size=8192):
+            fp.write(chunk)
 
-def download(session, design_id, target_file):
+def download(session, design_id, fp):
     job = start_export_job(session, design_id)
     while job["status"] == "in_progress":
         logger.info(f"Waiting for job {job["id"]}...")
         time.sleep(10)
         job = poll_export_job(session, job["id"])
     if job["status"] == "success":
-        download_file(job["urls"][0], target_file)
+        download_file(job["urls"][0], fp)
         return True
     else:
         logger.error(f"Export job failed: {job}")

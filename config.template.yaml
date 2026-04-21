@@ -1,0 +1,9 @@
+# Rename the file to .config.yaml and replace the values
+canva:
+  client_id: "canva client id"
+  client_secret: "canva secret"
+  design_id: "canva design id"
+
+wordpress:
+  username: "wordpress user name"
+  password: "wordpress password"
