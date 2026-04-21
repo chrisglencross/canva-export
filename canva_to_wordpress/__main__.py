@@ -21,7 +21,7 @@ def transcode(input, output):
         "-vcodec", "libx264",
         "-tune", "stillimage",
         "-movflags", "+faststart",
-        "-crf", 31,
+        "-crf", "31",
         output
     ]
     return subprocess.run(ffmpeg).returncode
@@ -50,7 +50,7 @@ def main():
     session = get_session(client_id, client_secret)
     updated_at = get_updated_at(session, design_id)
 
-    expected_media_description = f"Modified at {updated_at}"
+    expected_media_description = f"Updated at {updated_at}"
 
     if media_description and expected_media_description in media_description["rendered"]:
         logger.info(f"Canva design not modified since {updated_at}")
@@ -80,7 +80,7 @@ def main():
 
         logger.info(f"Uploading to {transcoded_file} to Wordpress")
         new_media = wordpress_client.upload_media(transcoded_file, f"{wordpress_slug}.mp4", "video/mp4")
-        logger.info(f"Uploaded id={new_media["id"]} to {new_media["link"]}")
+        logger.info(f"Uploaded id={new_media['id']} to {new_media['link']}")
 
         wordpress_client.set_media_properties(new_media["id"], {
             "title": "Clubroom Video",

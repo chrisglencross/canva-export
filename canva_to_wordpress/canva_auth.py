@@ -77,7 +77,7 @@ def refresh_session(client_id, client_secret, session: Session):
     return True
 
 def session_file() -> str:
-    return f"{os.environ["HOME"]}/data/.session.yaml"
+    return ".session.yaml"
 
 def read_cached_session() -> Optional[Session]:
     try:

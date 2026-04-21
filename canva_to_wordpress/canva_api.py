@@ -54,7 +54,7 @@ def download_file(url, target_file):
 def download(session, design_id, target_file):
     job = start_export_job(session, design_id)
     while job["status"] == "in_progress":
-        logger.info(f"Waiting for job {job["id"]}...")
+        logger.info(f"Waiting for job {job['id']}...")
         time.sleep(10)
         job = poll_export_job(session, job["id"])
     if job["status"] == "success":
