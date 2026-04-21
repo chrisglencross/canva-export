@@ -28,8 +28,8 @@ def start_export_job(session: canva_auth.Session, design_id: str):
                                  "design_id": design_id,
                                  "format": {
                                      "type": "mp4",
-                                     "quality": "horizontal_4k", # or horizontal_1080p
-                                     "export_quality": "pro",
+                                     "quality": "horizontal_4k",  # or horizontal_1080p
+                                     "export_quality": "pro", # or regular
                                  }
                              })
     response.raise_for_status()
@@ -43,21 +43,22 @@ def poll_export_job(session: canva_auth.Session, job_id: str):
     response.raise_for_status()
     return response.json()["job"]
 
-def download_file(url, fp):
-    logger.info(f"Downloading to {fp.name}...")
+def download_file(url, target_file):
+    logger.info(f"Downloading to {target_file}...")
     with requests.get(url, stream=True) as response:
         response.raise_for_status()
-        for chunk in response.iter_content(chunk_size=8192):
-            fp.write(chunk)
+        with open(target_file, "wb") as fp:
+            for chunk in response.iter_content(chunk_size=8192):
+                fp.write(chunk)
 
-def download(session, design_id, fp):
+def download(session, design_id, target_file):
     job = start_export_job(session, design_id)
     while job["status"] == "in_progress":
         logger.info(f"Waiting for job {job["id"]}...")
         time.sleep(10)
         job = poll_export_job(session, job["id"])
     if job["status"] == "success":
-        download_file(job["urls"][0], fp)
+        download_file(job["urls"][0], target_file)
         return True
     else:
         logger.error(f"Export job failed: {job}")
