@@ -51,7 +51,7 @@ def main():
     session = get_session(client_id, client_secret)
     updated_at = get_updated_at(session, design_id)
 
-    expected_media_description = f"Modified at {updated_at}"
+    expected_media_description = f"Updated at {updated_at}"
 
     if media_description and expected_media_description in media_description["rendered"]:
         logger.info(f"Canva design not modified since {updated_at}")
