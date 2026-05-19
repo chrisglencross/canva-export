@@ -2,8 +2,9 @@
 
 cd $(dirname $0)
 
-# source ./venv/bin/activate
-# python -m captive_portal
+# Ensure that we stay on the network
+source ./venv/bin/activate
+python -m captive_portal
 
 url="https://www.epsomandewellharriers.org/clubroom-video/"
 local_file=clubroom-video.mp4
