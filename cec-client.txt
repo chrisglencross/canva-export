@@ -1,0 +1,23 @@
+# List devices
+echo 'scan' | cec-client -s -d 1
+
+# Put a device in standby
+echo 'standby 0.0.0.0' | cec-client -s -d 1
+
+# Turn a device on
+echo 'on 0.0.0.0' | cec-client -s -d 1
+
+# Get power status
+echo 'pow 0.0.0.0' | cec-client -s -d 1
+ 
+# Help
+echo 'h' | cec-client -s -d 1
+
+# Get the name of the device
+echo 'name 0.0.0.0' | cec-client -s -d 1
+
+# List active devices
+echo 'lad' | cec-client -s -d 1
+
+# Set On Screen Display message (?)
+echo 'osd 0.0.0.0 message'
