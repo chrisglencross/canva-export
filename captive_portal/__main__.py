@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 
-URL = "http://www.epsomandewellharriers.org"
+URL = "http://neverssl.com"
 HEADLESS = True
 
 
@@ -31,7 +31,7 @@ def login_to_captive_portal(url, headless=True):
         driver.quit()
         return False
 
-    if "Epsom & Ewell Harriers" in driver.title:
+    if "NeverSSL" in driver.title:
         print(f"No captive portal detected: {driver.title}")
         driver.quit()
         return True
@@ -49,7 +49,7 @@ def login_to_captive_portal(url, headless=True):
     time.sleep(5)
 
     try:
-        if "Epsom & Ewell Harriers" in driver.title:
+        if "NeverSSL" in driver.title:
             print(f"Login successful (title changed): {driver.title}")
             driver.quit()
             return True
