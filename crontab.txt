@@ -24,8 +24,8 @@
 */20 * * * * /home/display/canva-export/update-video.sh > /home/display/canva-export/log/update-video.log 2>&1
 
 # TV on 5pm to 8pm on Monday
-0 17 * * MON home/display/canva-export/tv-on.sh
-0 20 * * MON home/display/canva-export/tv-off.sh
+0 17 * * MON /home/display/canva-export/tv-on.sh
+0 20 * * MON /home/display/canva-export/tv-off.sh
 
 # TV on 5:30pm to 8:30pm on Tuesday and Thursday
 30 17 * * TUE,THU /home/display/canva-export/tv-on.sh
