@@ -28,7 +28,7 @@ def transcode(input, output):
     return subprocess.run(ffmpeg).returncode
 
 def upload(localfile, host, username, password, remotefile):
-   logger.info(f"Uploading to ftp://{host}/{remotefile}")
+   logger.info(f"Uploading {localfile} to ftp://{host}/{remotefile}")
    curl = [
        "curl", "-s", "--ssl-reqd",
        "-u", f"{username}:{password}",
@@ -76,11 +76,15 @@ def main():
             exit(2)
         logger.info(f"Transcode reduced size from {os.path.getsize(download_file)//1024}KiB to {os.path.getsize(transcoded_file)//1024}KiB")
 
-        upload(transcoded_file,
+        return_code = upload(transcoded_file,
             config["ftp"]["hostname"],
             config["ftp"]["username"],
             config["ftp"]["password"],
             f"files/clubroom-video.mp4")
+        if return_code != 0:
+            print(f"File upload failed: {return_code}")
+            exit(3)
+        logger.info("File uploaded")
 
     with open(".last_modified", "w") as last_modified_file:
         last_modified_file.write(updated_at)
