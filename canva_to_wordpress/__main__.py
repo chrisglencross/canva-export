@@ -62,7 +62,6 @@ def main():
     logger.info(f"Downloading Canva design modified at {updated_at}")
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        tmpdir='.'
         download_file = f"{tmpdir}/download.mp4"
         transcoded_file = f"{tmpdir}/transcode.mp4"
 
