@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd "$(dirname $0)"
-VIDEO="./clubroom-video.mp4"
+VIDEO="./display.mp4"
 
 if [[ ! -f "$VIDEO" ]]; then
   ./update-video.sh

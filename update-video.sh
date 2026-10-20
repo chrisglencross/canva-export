@@ -6,7 +6,7 @@ cd $(dirname $0)
 #source ./venv/bin/activate
 #python -m captive_portal
 
-url="https://www.epsomandewellharriers.org/clubroom-video/"
+url="https://www.epsomandewellharriers.org/files/clubroom-video.mp4"
 local_file=clubroom-video.mp4
 tmp_file="${local_file}.tmp"
 
