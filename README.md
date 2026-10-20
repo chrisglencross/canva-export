@@ -3,7 +3,8 @@
 ## Overview
 
 Downloads a Canva presentation as a video in a format suitable for displaying on unattended digital signage
-and uploads it to a WordPress server.
+and uploads it a web server via FTP. The file was previously uploaded using WordPress APIs, hence the name of the
+module.
 
 The application is expected to be run as a cronjob on the kiosk machine, for example
 a Raspberry Pi. It will convert and download the presentation as a `.mp4` video file using Canva REST APIs.

@@ -4,6 +4,7 @@ canva:
   client_secret: "canva secret"
   design_id: "canva design id"
 
-wordpress:
-  username: "wordpress user name"
-  password: "wordpress password"
+ftp:
+  hostname: "ftp hostname"
+  username: "ftp username"
+  password: "ftp password"

@@ -1,3 +1,4 @@
+import logging
 import webbrowser
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Optional
@@ -8,6 +9,7 @@ import requests
 import yaml
 from requests.auth import HTTPBasicAuth
 
+logger = logging.getLogger('canva_auth')
 
 class Session:
     def __init__(self, access_token, refresh_token):
@@ -22,7 +24,10 @@ def get_session(client_id, client_secret, redirect_port=3001):
             if refresh_session(client_id, client_secret, session):
                 return session
         except Exception as e:
-            print("Error loading previous Canva Session: \n" + str(e) )
+            logger.warn("Error loading previous Canva Session: " + str(e) )
+            return session 
+    
+    logger.info("Opening browser for Canva login")
 
     code_verifier = pkce.generate_code_verifier(length=128)
     code_challenge = pkce.get_code_challenge(code_verifier)
@@ -83,8 +88,10 @@ def read_cached_session() -> Optional[Session]:
     try:
         with open(session_file(), 'r') as f:
             previous_session = yaml.safe_load(f)
+            logger.info("Obtained session")
             return Session(access_token=previous_session['access_token'], refresh_token=previous_session['refresh_token'])
-    except OSError:
+    except OSError as e:
+        logger.warn(f"Unable to open {session_file()}: {str(e)}")
         return None
 
 def write_cached_session(session: Session):
